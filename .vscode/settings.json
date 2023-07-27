@@ -1,5 +1,7 @@
 {
     "files.exclude": {
+        "*.import": true,
+        "*.blend1": true,
         "*.js": {
             "when": "$(basename).ts"
         },
