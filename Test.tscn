@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://cp7rnmr04wwju"]
 
 [ext_resource type="PackedScene" uid="uid://x75dhfnp4a67" path="res://FPS Rig.glb" id="1_4p82y"]
-[ext_resource type="Script" path="res://FPS.mjs" id="2_elnb3"]
+[ext_resource type="Script" path="res://scripts/FPS.mjs" id="2_cxqxw"]
 
 [node name="Node3D" type="Node3D"]
 
 [node name="FPS Rig" parent="." instance=ExtResource("1_4p82y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0284289, 0, -0.0241678)
-script = ExtResource("2_elnb3")
+script = ExtResource("2_cxqxw")
 
 [node name="Banana" parent="FPS Rig/Armature" index="0"]
 transform = Transform3D(0.522578, 0.177436, -0.833923, 0.850221, -0.18133, 0.494209, -0.0635252, -0.967283, -0.245619, 4.64201, 8.47613, -1.26886)
