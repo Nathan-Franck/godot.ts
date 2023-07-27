@@ -1,8 +1,6 @@
 type Properties<T> = { [key in keyof T as T[key] extends Function ? never : key]?: true };
 
-export function godotClass<
-    T extends godot.GodotClass,
->(props: {
+export function godotClass<T extends godot.GodotClass>(props: {
     inspectableProperties: Properties<InstanceType<T>>,
     definition: T
 }) {
