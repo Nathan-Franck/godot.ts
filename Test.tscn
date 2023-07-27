@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp7rnmr04wwju"]
+
+[ext_resource type="PackedScene" uid="uid://x75dhfnp4a67" path="res://FPS Rig.glb" id="1_4p82y"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="FPS Rig" parent="." instance=ExtResource("1_4p82y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0284289, 0, -0.0241678)
+
+[node name="Banana" parent="FPS Rig/Armature" index="0"]
+transform = Transform3D(0.522578, 0.177436, -0.833923, 0.850221, -0.18133, 0.494209, -0.0635252, -0.967283, -0.245619, 4.64201, 8.47613, -1.26886)
+
+[node name="Skeleton3D" parent="FPS Rig/Armature" index="1"]
+bones/4/position = Vector3(-1.164, 2.74143, -0.121591)
+bones/4/rotation = Quaternion(-0.320577, -0.239051, 0.257167, 0.879744)
+bones/5/rotation = Quaternion(-0.0169741, 0.0453585, 0.0346266, 0.998226)
+bones/6/rotation = Quaternion(-0.030043, 0.0210279, -0.05708, 0.997696)
+bones/7/rotation = Quaternion(-0.242456, -0.0698763, 0.163425, 0.953743)
+bones/8/rotation = Quaternion(-0.132765, -0.0267386, -0.0593931, 0.989005)
+bones/9/rotation = Quaternion(-0.0290845, -0.0268249, -0.000494625, 0.999217)
+bones/10/rotation = Quaternion(-0.191057, -0.0547468, 0.0602433, 0.978198)
+bones/11/rotation = Quaternion(-0.15271, -0.0408774, 0.0583196, 0.985702)
+bones/12/rotation = Quaternion(-0.0998264, 9.0183e-05, 0.032582, 0.994471)
+bones/13/rotation = Quaternion(-0.226924, 0.051305, -0.0448263, 0.971527)
+bones/14/rotation = Quaternion(-0.127146, 0.0507781, -0.0410665, 0.989732)
+bones/15/rotation = Quaternion(-0.103436, -0.011187, 0.0564202, 0.992972)
+bones/16/rotation = Quaternion(-0.116008, 0.305943, -0.412916, 0.849966)
+bones/17/rotation = Quaternion(-0.171011, 0.00363216, 0.00145371, 0.985261)
+bones/18/rotation = Quaternion(0.0144421, 0.0734757, -0.0294122, 0.996759)
+bones/19/position = Vector3(-0.744811, 2.7053, -0.0653706)
+bones/19/rotation = Quaternion(-0.7205, -0.0624369, 0.0708437, 0.686996)
+bones/20/position = Vector3(0.662932, 3.05129, 0.050978)
+bones/20/rotation = Quaternion(-0.632869, 0.102512, -0.110289, 0.759476)
+bones/20/scale = Vector3(1, 1, 1)
+
+[editable path="FPS Rig"]
