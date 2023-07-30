@@ -1,4 +1,5 @@
 import { registerPropsOnClass } from "./registerPropsOnClass.mjs";
+import { parseResult } from "../scenes/Player.tscn";
 
 export default class FPS extends godot.Node3D {
     direction = new godot.Vector2(0, 0);
@@ -7,13 +8,9 @@ export default class FPS extends godot.Node3D {
     _ready() {
         console.log("FPS ready");
         this.hiddenThing = 1;
-        var newScene = godot.ResourceLoader.load("res://scenes/Player.tscn");
-        // attach to current node
-        // console.log("newScene", Object.getPrototypeOf(newScene));
-        var player = newScene.instantiate() as godot.Node;
-        console.log("player", player);
+        var newScene = godot.ResourceLoader.load("res://scenes/Player.tscn") as godot.PackedScene;
+        var player = newScene.instantiate(); // TODO: return a node that has full knowledge of the hierarchy (Language Service Plugin)
         this.add_child(player);
-        console.log("player", player);
     }
     _process(delta: number) {
         this.hiddenThing += delta;

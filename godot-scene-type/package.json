@@ -1,0 +1,20 @@
+{
+    "name": "godot-scene-type",
+    "version": "1.0.0",
+    "description": "TypeScript Language Service Plugin for converting .tscn files to types",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js"
+    },
+    "author": "Your Name",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^16.11.7",
+        "typescript": "^5.1.6"
+    },
+    "dependencies": {
+        "typescript": "^5.1.6"
+    }
+}

@@ -126,7 +126,6 @@ declare module globalThis {
 }
 type VariantType = godot;
 type PropertyHint = typeof godot.PropertyHint.PROPERTY_HINT_ENUM
-type Resource = symbol;
 type Margin = symbol;
 
 declare enum godot {
@@ -188,10 +187,21 @@ declare module godot {
 		rset_config(property: string, mode: godot.MultiplayerAPI.RPCMode): void;
 		_ready(): void;
 		get_node<T extends godot.Node>(path: string | (new () => godot.Node)): T;
+		add_child<T extends godot.Node>(node: T, legible_unique_name?: string): T;
 	}
 	class Node3D extends Node {
+
 	}
 	class Sprite2D {
+	}
+	class ResourceLoader {
+		static load(path: string): Resource;
+	}
+	class Resource {
+	}
+	// scene that extends resource
+	class PackedScene extends Resource {
+		instantiate(): Node;
 	}
 	// PropertyHint.PROPERTY_HINT_ENUM
 	enum PropertyHint {

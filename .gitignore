@@ -4,3 +4,6 @@
 *.js.map
 *.mjs
 *.mjs.map
+dist
+node_modules
+package-lock.json

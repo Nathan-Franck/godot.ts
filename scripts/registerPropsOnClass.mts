@@ -1,4 +1,4 @@
-type Properties<T> = { [key in keyof T as T[key] extends Function ? never : key]?: true };
+export type Properties<T> = { [key in keyof T as T[key] extends Function ? never : key]?: true };
 
 export function registerPropsOnClass<T extends godot.GodotClass>(
     classDefinition: T,

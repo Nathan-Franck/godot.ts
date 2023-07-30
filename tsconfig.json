@@ -1,16 +1,26 @@
 {
-	"include": [".", ".vscode/scripts/godot.d.ts"],
-	"exclude": [".import"],
+	"include": [
+		".",
+		".vscode/scripts/godot.d.ts"
+	],
+	"exclude": [
+		".import"
+	],
 	"compilerOptions": {
 		"rootDir": ".",
 		"target": "ESNext",
 		"module": "ESNext",
-		"lib": ["ESNext"],
+		"lib": [
+			"ESNext"
+		],
 		"experimentalDecorators": true,
 		"jsx": "preserve",
 		"sourceMap": true,
 		"sourceRoot": ".",
-		"": true,
+		"plugins": [
+			{
+				"name": "godot-scene-type"
+			}
+		]
 	}
 }
-

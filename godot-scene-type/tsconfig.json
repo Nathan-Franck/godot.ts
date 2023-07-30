@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "commonjs",
+      "outDir": "dist", // Output directory for compiled files
+      "declaration": true, // Generate declaration files (.d.ts)
+      "strict": true, // Enable strict type checking
+      "esModuleInterop": true, // Allow default imports from CommonJS modules
+      "skipLibCheck": true // Skip type checking of declaration files
+    },
+    "include": ["src/**/*.ts"], // Include all TypeScript files inside the src folder
+    "exclude": ["node_modules", "dist"] // Exclude the node_modules and dist directories
+  }
