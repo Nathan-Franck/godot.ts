@@ -17,4 +17,4 @@ export default class FPS extends godot.Node3D {
 registerPropsOnClass(FPS, {
     direction: true,
     speed: true,
-});
+}); 
