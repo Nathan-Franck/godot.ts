@@ -9,7 +9,8 @@
 		"experimentalDecorators": true,
 		"jsx": "preserve",
 		"sourceMap": true,
-		"sourceRoot": "."
+		"sourceRoot": ".",
+		"": true,
 	}
 }
 

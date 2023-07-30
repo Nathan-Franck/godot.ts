@@ -1,7 +1,7 @@
 {
 	"scripts": {
-		"watch": "tsc -w -p .",
-		"compile": "tsc -p ."
+		"watch": "tsc --watch --project .",
+		"compile": "tsc --project ."
 	},
 	"devDependencies": {
 		"typescript": "^3.9.7"

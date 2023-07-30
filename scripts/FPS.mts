@@ -7,10 +7,17 @@ export default class FPS extends godot.Node3D {
     _ready() {
         console.log("FPS ready");
         this.hiddenThing = 1;
+        var newScene = godot.ResourceLoader.load("res://scenes/Player.tscn");
+        // attach to current node
+        // console.log("newScene", Object.getPrototypeOf(newScene));
+        var player = newScene.instantiate() as godot.Node;
+        console.log("player", player);
+        this.add_child(player);
+        console.log("player", player);
     }
     _process(delta: number) {
         this.hiddenThing += delta;
-        console.log("FPS process", this.hiddenThing);
+        // console.log("FPS process", this.hiddenThing);
     }
 }
 
