@@ -22,14 +22,14 @@ func _init():
 
     # map imports to `import { ClassName } from "path/to/ClassName"`
     for key in result.imports.keys():
-        importString += "import { %s } from \"%s\"\n" % [key, result.imports[key]]
+        importString += "import { %sSpec } from \"%s\"\n" % [key, result.imports[key]]
 
     # map path->type to `path: type`
     var exportType = "";
     for key in result.nodePathToType.keys():
         exportType += '\t"%s": %s\n' % [key, result.nodePathToType[key]]
 
-    file.store_string("%s\ndeclare type %s = {\n%s}" % [
+    file.store_string("%s\nexport type %sSpec = {\n%s}" % [
         importString,
         formatSceneName(result.exportName),
         exportType,
@@ -50,7 +50,7 @@ func parseScene(scene):
         if (state.get_node_instance(i)):
             # Remove spaces from node name
             var scene_name = formatSceneName(state.get_node_instance(i).get_state().get_node_name(0))
-            result.nodePathToType[node_path] = "godot.%s<%s>" % [
+            result.nodePathToType[node_path] = "godot.%s<%sSpec>" % [
                 state.get_node_instance(i).get_state().get_node_type(0),
                 scene_name
             ]

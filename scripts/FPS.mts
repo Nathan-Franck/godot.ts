@@ -1,7 +1,7 @@
 import { registerPropsOnClass } from "./registerPropsOnClass.mjs";
-import { Player } from "../scenes/Player.tscn";
+import { PlayerSpec } from "../scenes/Player.tscn";
 
-export default class FPS extends godot.Node3D {
+export default class FPS extends godot.Node3D<PlayerSpec> {
     direction = new godot.Vector2(0, 0);
     speed = 0;
     private hiddenThing = 0;

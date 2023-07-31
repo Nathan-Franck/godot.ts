@@ -182,14 +182,14 @@ declare enum godot {
 declare module godot {
 	class Object {
 	}
-	class Node {
+	class Node<T = Record<string, string>> {
 		rpc_config(property: string, mode: godot.MultiplayerAPI.RPCMode): void;
 		rset_config(property: string, mode: godot.MultiplayerAPI.RPCMode): void;
 		_ready(): void;
 		get_node<T extends godot.Node>(path: string | (new () => godot.Node)): T;
 		add_child<T extends godot.Node>(node: T, legible_unique_name?: string): T;
 	}
-	class Node3D extends Node {
+	class Node3D<T> extends Node<T> {
 
 	}
 	class Sprite2D {
