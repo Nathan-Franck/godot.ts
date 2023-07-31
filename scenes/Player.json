@@ -1,0 +1,13 @@
+{
+	".": "Node3D",
+	"./FPS Rig/": "Node3D",
+	"./FPS Rig/AnimationPlayer": "AnimationPlayer",
+	"./FPS Rig/Armature": "Node3D",
+	"./FPS Rig/Armature/Banana": "MeshInstance3D",
+	"./FPS Rig/Armature/Skeleton3D": "Skeleton3D",
+	"./FPS Rig/Armature/Skeleton3D/Arm": "MeshInstance3D",
+	"./FPS Rig/Reference": "Node3D",
+	"./FPS Rig/Reference001": "Node3D",
+	"./FPS Rig/Reference002": "Node3D",
+	"./Target": "Node3D"
+}

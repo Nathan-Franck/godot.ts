@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://dk1jyf750kpes"]
+[gd_scene load_steps=3 format=3 uid="uid://dk1jyf750kpes"]
 
 [ext_resource type="Script" path="res://scripts/Player.mjs" id="1_tvedg"]
+[ext_resource type="PackedScene" uid="uid://x75dhfnp4a67" path="res://FPS Rig.glb" id="2_h5mfk"]
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="Node3D"]
 script = ExtResource("1_tvedg")
+
+[node name="Target" type="Node3D" parent="."]
+
+[node name="FPS Rig" parent="." instance=ExtResource("2_h5mfk")]
+
+[editable path="FPS Rig"]
