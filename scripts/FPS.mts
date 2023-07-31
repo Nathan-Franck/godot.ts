@@ -9,7 +9,9 @@ export default class FPS extends godot.Node3D<PlayerSpec> {
         console.log("FPS ready");
         this.hiddenThing = 1;
         var newScene = godot.ResourceLoader.load("res://scenes/Player.tscn") as godot.PackedScene;
-        var player = newScene.instantiate(); // TODO: return a node that has full knowledge of the hierarchy (Language Service Plugin)
+        var player = newScene.instantiate() as any as godot.Node<PlayerSpec>;
+        var result = player.get_node("./FPS Rig").get_node("./Armature/Skeleton3D/Arm");
+        result.get_mesh();
         this.add_child(player);
     }
     _process(delta: number) {

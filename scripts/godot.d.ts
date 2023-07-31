@@ -182,14 +182,20 @@ declare enum godot {
 declare module godot {
 	class Object {
 	}
+	type StringToType<T extends string> = T extends keyof typeof godot ? typeof godot[T] extends { "prototype": infer Proto } ? Proto : never : never;
 	class Node<T = Record<string, string>> {
 		rpc_config(property: string, mode: godot.MultiplayerAPI.RPCMode): void;
 		rset_config(property: string, mode: godot.MultiplayerAPI.RPCMode): void;
 		_ready(): void;
-		get_node<T extends godot.Node>(path: string | (new () => godot.Node)): T;
-		add_child<T extends godot.Node>(node: T, legible_unique_name?: string): T;
+		get_node<Key extends keyof T>(path: Key): T[Key] extends string ? StringToType<T[Key]> : T[Key];
+		add_child<T extends godot.Node<any>>(node: T, legible_unique_name?: string): T;
 	}
-	class Node3D<T> extends Node<T> {
+	class MeshInstance3D extends Node {
+		get_mesh(): Mesh;
+	}
+	class Mesh {
+	}
+	class Node3D<T = Record<string, string>> extends Node<T> {
 
 	}
 	class Sprite2D {
