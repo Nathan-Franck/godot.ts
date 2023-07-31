@@ -1,11 +1,16 @@
 import { registerPropsOnClass } from "./registerPropsOnClass.mjs";
 import { PlayerSpec } from "../scenes/Player.tscn";
+import { Node3DSpec } from "../Test.tscn";
 
-export default class FPS extends godot.Node3D<PlayerSpec> {
+export default class FPS extends godot.Node3D<Node3DSpec> {
     direction = new godot.Vector2(0, 0);
     speed = 0;
     private hiddenThing = 0;
     _ready() {
+        var camera = this.get_node("./Camera3D")
+        camera.set_current(true);
+        var animationPlayer = this.get_node("./FPS Rig").get_node("./AnimationPlayer");
+        animationPlayer.play("Idle");
         console.log("FPS ready");
         this.hiddenThing = 1;
         var newScene = godot.ResourceLoader.load("res://scenes/Player.tscn") as godot.PackedScene;

@@ -194,6 +194,7 @@ declare module godot {
 		get_mesh(): Mesh;
 	}
 	class Mesh {
+		get_surface_count(): number;
 	}
 	class Node3D<T = Record<string, string>> extends Node<T> {
 
@@ -202,6 +203,12 @@ declare module godot {
 	}
 	class ResourceLoader {
 		static load(path: string): Resource;
+	}
+	class Camera3D extends Node3D {
+		set_current(current: boolean): void;
+	}
+	class AnimationPlayer extends Node {
+		play(name: string): void;
 	}
 	class Resource {
 	}
