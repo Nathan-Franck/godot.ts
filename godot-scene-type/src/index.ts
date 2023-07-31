@@ -3,6 +3,7 @@ import type tsModule from 'typescript/lib/tsserverlibrary';
 import type ts from 'typescript/lib/tsserverlibrary';
 import fs from 'fs';
 import path from 'path';
+import { execSync } from 'child_process';
 
 function init(modules: { typescript: typeof ts }) {
 
@@ -25,18 +26,19 @@ function init(modules: { typescript: typeof ts }) {
       },
     });
 
-    languageServiceHost.getScriptSnapshot = (fileName: string) => {
-      if (fileName.endsWith('.tscn')) {
-        return modules.typescript.ScriptSnapshot.fromString(`
-declare const blend: { parseResult: "fail!" };
-export = blend;
-        `);
-      }
+    const supportedExtensions = [
+      '.tscn',
+      '.scn',
+      '.glb',
+      '.gltf',
+    ];
 
-      // Fall back to the default behavior.
-      const result = info.languageServiceHost.getScriptSnapshot(fileName);
-      return result;
-    };
+    const typeFolderPath = ".godot/types";
+    function resPathToFileString(path: string) {
+      return path.slice(6) // Remove "res://"
+    }
+    const scriptPath = "godot-scene-type/cli-src/test.gd";
+    const godotPath = "C:/Projects/Coding/godot/bin/godot.windows.editor.x86_64.exe";
 
     languageServiceHost.resolveModuleNameLiterals = (
       moduleNames,
@@ -47,15 +49,34 @@ export = blend;
       reusedNames
     ) => {
       return moduleNames.map(moduleName => {
-        if (moduleName.text.endsWith('.tscn')) {
+        if (supportedExtensions.some(supportedExt => moduleName.text.endsWith(supportedExt))) {
+          // if module starts with res:// we treat this differently
+          const fromProjectRoot = moduleName.text.startsWith("res://")
+            ? resPathToFileString(moduleName.text)
+            : path.relative(
+              info.project.getCurrentDirectory(),
+              `${path.dirname(containingFile)}/${moduleName.text}`
+            );
+          const resolvedPath = `res://${fromProjectRoot}`;
+          const command = `${godotPath} --headless --path "${info.project.getCurrentDirectory()
+            }" --script "${scriptPath}" -- "${resolvedPath}" "${typeFolderPath}"`;
+          info.project.projectService.logger.info(
+            `Running command: ${command}`
+          );
+          execSync(command);
+
           const resolvedModule: ts.ResolvedModuleFull = {
             resolvedFileName: path.resolve(
-              path.dirname(containingFile),
-              moduleName.text,
+              info.project.getCurrentDirectory(),
+              typeFolderPath,
+              fromProjectRoot + ".d.ts"
             ),
             extension: modules.typescript.Extension.Dts,
             isExternalLibraryImport: false,
           };
+          info.project.projectService.logger.info(
+            `Resolved module: ${JSON.stringify(resolvedModule)}`
+          );
           return { resolvedModule };
         }
 

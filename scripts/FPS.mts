@@ -1,5 +1,5 @@
 import { registerPropsOnClass } from "./registerPropsOnClass.mjs";
-import { parseResult } from "../scenes/Player.tscn";
+import { Player } from "../scenes/Player.tscn";
 
 export default class FPS extends godot.Node3D {
     direction = new godot.Vector2(0, 0);

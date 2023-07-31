@@ -7,5 +7,5 @@
 		"godot-scene-type": "./godot-scene-type",
 		"typescript": "^5.1.6"
 	},
-	"types": "godot.d.ts"
+	"types": "./scripts/godot.d.ts"
 }
