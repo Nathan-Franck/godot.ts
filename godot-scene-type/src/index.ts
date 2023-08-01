@@ -4,6 +4,7 @@ import type ts from 'typescript/lib/tsserverlibrary';
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { ScriptSnapshot } from 'typescript';
 
 function init(modules: { typescript: typeof ts }) {
 
@@ -26,19 +27,47 @@ function init(modules: { typescript: typeof ts }) {
       },
     });
 
-    const supportedExtensions = [
-      '.tscn',
-      '.scn',
-      '.glb',
-      '.gltf',
-    ];
-
     const typeFolderPath = ".godot/types";
     function resPathToFileString(path: string) {
       return path.slice(6) // Remove "res://"
     }
     const scriptPath = "godot-scene-type/cli-src/test.gd";
     const godotPath = "C:/Projects/Coding/godot/bin/godot.windows.editor.x86_64.exe";
+
+    languageServiceHost.getScriptKind = (fileName) => {
+      if (isSupportedExtension(fileName)) {
+        return modules.typescript.ScriptKind.TS;
+      }
+      return info.languageServiceHost.getScriptKind!(fileName);
+    };
+
+    languageServiceHost.getScriptSnapshot = (fileName: string) => {
+      if (isSupportedExtension(fileName)) {
+        info.project.projectService.logger.info(fileName);
+        const relativeToProjectRoot = path.relative(
+          info.project.getCurrentDirectory(),
+          fileName
+        );
+        const resolvedPath = `res://${relativeToProjectRoot}`;
+        const command = `${godotPath} --headless --path "${info.project.getCurrentDirectory()
+          }" --script "${scriptPath}" -- "${resolvedPath}" "${typeFolderPath}"`;
+        info.project.projectService.logger.info(
+          `Running command: ${command}`
+        );
+        execSync(command);
+        info.project.projectService.logger.info(relativeToProjectRoot);
+        const toSnapshot = path.resolve(
+          info.project.getCurrentDirectory(),
+          typeFolderPath,
+          relativeToProjectRoot + ".d.ts"
+        );
+        info.project.projectService.logger.info(toSnapshot);
+        return ScriptSnapshot.fromString(fs.readFileSync(toSnapshot).toString());
+      }
+
+      // Fall back to the default behavior.
+      return info.languageServiceHost.getScriptSnapshot(fileName);
+    };
 
     languageServiceHost.resolveModuleNameLiterals = (
       moduleNames,
@@ -49,7 +78,7 @@ function init(modules: { typescript: typeof ts }) {
       reusedNames
     ) => {
       return moduleNames.map(moduleName => {
-        if (supportedExtensions.some(supportedExt => moduleName.text.endsWith(supportedExt))) {
+        if (isSupportedExtension(moduleName.text)) {
           // if module starts with res:// we treat this differently
           const fromProjectRoot = moduleName.text.startsWith("res://")
             ? resPathToFileString(moduleName.text)
@@ -57,19 +86,10 @@ function init(modules: { typescript: typeof ts }) {
               info.project.getCurrentDirectory(),
               `${path.dirname(containingFile)}/${moduleName.text}`
             );
-          const resolvedPath = `res://${fromProjectRoot}`;
-          const command = `${godotPath} --headless --path "${info.project.getCurrentDirectory()
-            }" --script "${scriptPath}" -- "${resolvedPath}" "${typeFolderPath}"`;
-          info.project.projectService.logger.info(
-            `Running command: ${command}`
-          );
-          execSync(command);
-
           const resolvedModule: ts.ResolvedModuleFull = {
             resolvedFileName: path.resolve(
               info.project.getCurrentDirectory(),
-              typeFolderPath,
-              fromProjectRoot + ".d.ts"
+              fromProjectRoot
             ),
             extension: modules.typescript.Extension.Dts,
             isExternalLibraryImport: false,
@@ -93,7 +113,23 @@ function init(modules: { typescript: typeof ts }) {
     return languageService;
   }
 
-  return { create };
+  const supportedExtensions = [
+    '.tscn',
+    '.scn',
+    '.glb',
+    '.gltf',
+  ];
+
+  function isSupportedExtension(fileName: string) {
+    return supportedExtensions.some(supportedExt => fileName.endsWith(supportedExt));
+  }
+
+  function getExternalFiles(
+    project: tsModule.server.ConfiguredProject,
+  ): string[] {
+    return project.getFileNames().filter(isSupportedExtension);
+  }
+  return { create, getExternalFiles };
 }
 
 export = init;
