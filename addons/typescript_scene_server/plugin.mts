@@ -23,13 +23,22 @@ export default class Plugin extends godot.EditorPlugin {
         var shouldHandleConnection = this._server.is_connection_available();
         if (shouldHandleConnection) {
             var peer = this._server.take_connection();
+            peer.set_no_delay(true);
             console.log(`Connection established to client ${peer.get_connected_host()}`);
-            var [err, data] = peer.get_data(512);
+            var dataSize = peer.get_available_bytes();
+            var [err, data] = peer.get_data(dataSize);
             console.log(err);
             console.log(data.size());
             console.log(data.get_string_from_ascii());
             console.log("Connection established");
-            peer.put_data(new godot.PackedByteArray("Hello from Godot"));
+            var message = "Hello from the server";
+            var output = new godot.PackedByteArray();
+            for (var i = 0; i < message.length; i++) {
+                output.push_back(message.charCodeAt(i));
+            }
+            var err = peer.put_data(output);
+            console.log(err);
+            console.log("Data sent");
         }
     }
 }
