@@ -4,7 +4,7 @@ var client = new net.Socket();
 // get back a message
 client.connect(8092, '127.0.0.1', function () {
     client.write(JSON.stringify({
-        scenePath: "res://Test.tscn",
+        scenePath: "res://FPS Rig.glb",
         sceneType: "PlayerSpec"
     }));
     // client.destroy();
