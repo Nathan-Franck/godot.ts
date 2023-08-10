@@ -1,11 +1,13 @@
 extends SceneTree
-
 func _init():
+
+    
     var args = OS.get_cmdline_user_args()
     var input_path = args[0]
     var output_path = args[1]
     print(input_path)
-    var scene = ResourceLoader.load(input_path)
+
+    var scene = ResourceLoader.load(input_path, "", 2)
     var result = parseScene(scene)
     print(result)
 

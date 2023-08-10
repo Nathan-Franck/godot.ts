@@ -27,20 +27,52 @@ export default class Plugin extends godot.EditorPlugin {
             console.log(`Connection established to client ${peer.get_connected_host()}`);
             var dataSize = peer.get_available_bytes();
             var [err, data] = peer.get_data(dataSize);
-            console.log(err);
-            console.log(data.size());
-            console.log(data.get_string_from_ascii());
-            console.log("Connection established");
-            var message = "Hello from the server";
-            var output = new godot.PackedByteArray();
-            for (var i = 0; i < message.length; i++) {
-                output.push_back(message.charCodeAt(i));
+            var messageFromClient = data.get_string_from_ascii();
+            type Message = {
+                scenePath: string,
+                sceneType: string,
+            };
+            var message = <Message>JSON.parse(messageFromClient);
+            var scene = godot.ResourceLoader.load(message.scenePath, "", 2) as godot.PackedScene;
+            var sceneData = parseScene(scene);
+            var response = JSON.stringify(sceneData);
+            {
+                var output = new godot.PackedByteArray();
+                for (var i = 0; i < response.length; i++) {
+                    output.push_back(response.charCodeAt(i));
+                }
+                var err = peer.put_data(output);
+                if (err != godot.OK) {
+                    console.log("Error sending data");
+                }
             }
-            var err = peer.put_data(output);
-            console.log(err);
             console.log("Data sent");
         }
     }
 }
 
+function parseScene(scene: godot.PackedScene) {
+    var state = scene.get_state();
+    var result = {
+        "exportName": `${state.get_node_name(0)}Spec`,
+        "nodePathToType": {},
+        "imports": {},
+    };
+    for (var i = 0; i < state.get_node_count(); i++) {
+        var node_path = `${state.get_node_path(i)}`;
+        if (state.get_node_instance(i)) {
+            var scene_name = formatSceneName(state.get_node_instance(i).get_state().get_node_name(0));
+            result.nodePathToType[node_path] = `godot.${state.get_node_instance(i).get_state().get_node_type(0)}<${scene_name}Spec>`;
+            result.imports[scene_name] = state.get_node_instance(i).get_path();
+        } else {
+            result.nodePathToType[node_path] = `"${state.get_node_type(i)}"`;
+        }
+    }
+    return result;
+}
+
 godot.set_script_tooled(Plugin, true);
+
+function formatSceneName(theName: string) {
+    return theName.replace(" ", "");
+}
